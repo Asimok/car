@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.example.laundryrack.tools.LongClickButton;
 
 import com.example.laundryrack.tools.Codes;
 import com.example.laundryrack.tools.bluetooth_Pref;
@@ -39,7 +39,7 @@ import java.util.UUID;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private boolean shortPress = false;
     private final UUID MY_UUID = UUID
             .fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextToSpeech texttospeech;
     public Button startgetweight, initweight, recycletrush, hazaroustrush;
-
+private LongClickButton downLundary,upLaundary;
     BluetoothDevice lvDevice = null;
     private Toast mToast;
     BluetoothSocket lvSocket = null;
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean bldrytrush = true, blwettrush = true, blrecycletrush = true, blhazaroustrush = true;
     int ret = 0;// 函数调用返回值
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +85,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startgetweight = (Button) findViewById(R.id.startgetweight);
         initweight = (Button) findViewById(R.id.initweight);
 
+          downLundary = (LongClickButton ) findViewById(R.id.downlaundary);
+          upLaundary =  (LongClickButton )findViewById(R.id.uplaundary);
+
+//连续减
+        downLundary.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
+            @Override
+            public void repeatAction() {
+                try {
+                    send(blue_sp.getBluetoothAd(), Codes.upLundary);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 50);
+        //连续加
+        upLaundary.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
+            @Override
+            public void repeatAction() {
+                Log.d("aa","持续");
+                try {
+                    send(blue_sp.getBluetoothAd(), Codes.upLundary);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 50);
+
+        //减1
+        downLundary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    send(blue_sp.getBluetoothAd(), Codes.downLundary);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        //加1
+        upLaundary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("aa","one");
+                try {
+
+                    send(blue_sp.getBluetoothAd(), Codes.upLundary);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
         startgetweight.setOnClickListener(this);
-startgetweight.setOnLongClickListener(this);
         initweight.setOnClickListener(this);
         texttospeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
 
@@ -275,14 +335,14 @@ startgetweight.setOnLongClickListener(this);
             case R.id.startgetweight:
                 try {
                     if (bldrytrush) {
-                        send(blue_sp.getBluetoothAd(), Codes.upLundary);
+                        send(blue_sp.getBluetoothAd(), Codes.openLundary);
                         startgetweight.setBackgroundResource(R.drawable.btn_close);
                         startgetweight.setText("关闭");
                         bldrytrush = false;
                     } else {
                         startgetweight.setText("开启");
 
-                        send(blue_sp.getBluetoothAd(), Codes.closeDryTrush);
+                        send(blue_sp.getBluetoothAd(), Codes.closeLundary);
                         startgetweight.setBackgroundResource(R.drawable.btn_open);
                         bldrytrush = true;
                     }
@@ -294,8 +354,7 @@ startgetweight.setOnLongClickListener(this);
             case R.id.initweight:
                 try {
 
-                        send(blue_sp.getBluetoothAd(), Codes.openwettrush);
-
+                        send(blue_sp.getBluetoothAd(), Codes.upLundary);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -308,57 +367,7 @@ startgetweight.setOnLongClickListener(this);
     //TODO 按键按下
 
 
-    @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_3) {
-            shortPress = false;
-            //长按要执行的代码
-            try {
-                send(blue_sp.getBluetoothAd(), Codes.upLundary);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.e("onKeyUp", "onKeyLongPress");
 
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_3) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                event.startTracking(); //只有执行了这行代码才会调用onKeyLongPress的；
-                if (event.getRepeatCount() == 0) {
-                    shortPress = true;
-                }
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_3) {
-            if (shortPress) {
-                //短按要执行的代码
-
-                Log.e("onKeyUp", "onKeyUp2");
-
-            }
-            shortPress = false;
-            return true;
-        }
-        return super.onKeyUp(keyCode, event);
-    }
-
-    @Override
-    public boolean onLongClick(View view) {
-        Log.e("onKeyUp", "onKeyUp1");
-        return false;
-    }
 
 
     private class ConnectedThread extends Thread {
@@ -393,7 +402,7 @@ startgetweight.setOnLongClickListener(this);
             byte[] buffer = new byte[128];
             int bytes;
 
-            // Keep listening to the InputStream while connected
+
             while (true) {
                 synchronized (this) {
 
