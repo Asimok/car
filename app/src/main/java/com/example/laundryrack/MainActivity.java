@@ -46,45 +46,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private OutputStream os;
     private ConnectedThread thread;
     boolean commected = true;
-    private TextView tv_recive, tvBandBluetooth;
+    private TextView  tvBandBluetooth;
     private bluetooth_Pref blue_sp;
     // 获取到蓝牙适配器
     public BluetoothAdapter mBluetoothAdapter;
 
-    private TextView tvflodstate;
-    private ImageView imgflodstate;
+    private TextView tvLeftClothState,tvRightClothState,tvLeftClothWeight,tvRightClothWeight;
+    private ImageView imgLeftClothState,imgRightClothState;
 
     private TextToSpeech texttospeech;
-    public Button startgetweight, initweight, recycletrush, hazaroustrush;
+    private Button startgetweight;
+    private Button initweightleft;
+    private Button bandleft;
+    private Button bandright;
 private LongClickButton downLundary,upLaundary;
     BluetoothDevice lvDevice = null;
-    private Toast mToast;
-    BluetoothSocket lvSocket = null;
-    private SharedPreferences mSharedPreferences;
-    private boolean mTranslateEnable = false;
 
-    private boolean bldrytrush = true, blwettrush = true, blrecycletrush = true, blhazaroustrush = true;
-    int ret = 0;// 函数调用返回值
+    BluetoothSocket lvSocket = null;
+
+
+    private boolean bldrytrush = true;
+
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        tvflodstate=findViewById(R.id.flodstate);
-        imgflodstate=findViewById(R.id.imgflodstate);
-
-        tv_recive = findViewById(R.id.tvrecive);
+        Button initweightright = findViewById(R.id.initweightright);
+        tvRightClothState=findViewById(R.id.rightclothstate);
+        tvLeftClothState=findViewById(R.id.leftclothstate);
+        imgLeftClothState=findViewById(R.id.imgleftcloth);
+        imgRightClothState=findViewById(R.id.imgrightcloth);
+        tvLeftClothWeight = findViewById(R.id.tvleftclothweight);
+        tvRightClothWeight = findViewById(R.id.tvrightclothweight);
         tvBandBluetooth = (TextView) findViewById(R.id.tvBandBluetooth);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         blue_sp = bluetooth_Pref.getInstance(this);
         tvBandBluetooth.setText(String.format("已绑定设备：  %s  %s", blue_sp.getBluetoothName(), blue_sp.getBluetoothAd()));
-
         startgetweight = (Button) findViewById(R.id.startgetweight);
-        initweight = (Button) findViewById(R.id.initweight);
-
+        initweightleft = (Button) findViewById(R.id.initweightleft);
+        bandleft = findViewById(R.id.bandleft);
+        bandright = findViewById(R.id.bandright);
           downLundary = (LongClickButton ) findViewById(R.id.downlaundary);
           upLaundary =  (LongClickButton )findViewById(R.id.uplaundary);
 
@@ -93,7 +96,7 @@ private LongClickButton downLundary,upLaundary;
             @Override
             public void repeatAction() {
                 try {
-                    send(blue_sp.getBluetoothAd(), Codes.upLundary);
+                    send(blue_sp.getBluetoothAd(), Codes.downLundary);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -138,15 +141,11 @@ private LongClickButton downLundary,upLaundary;
         });
 
 
-
-
-
-
-
-
-
+        initweightright.setOnClickListener(this);
         startgetweight.setOnClickListener(this);
-        initweight.setOnClickListener(this);
+        initweightleft.setOnClickListener(this);
+        bandright.setOnClickListener(this);
+        bandleft.setOnClickListener(this);
         texttospeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
 
             @Override
@@ -167,7 +166,127 @@ private LongClickButton downLundary,upLaundary;
 
 
 
+    // 创建handler，因为我们接收是采用线程来接收的，在线程中无法操作UI，所以需要handler
+    @SuppressLint("HandlerLeak")
+    Handler handler = new Handler() {
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void handleMessage(Message msg) {
 
+            super.handleMessage(msg);
+            Log.e("cc1","收到 "+(String)msg.obj);
+String nowWeight=(String) msg.obj;
+
+    if (nowWeight.contains("r") && nowWeight.contains("i") && nowWeight.contains("l") && nowWeight.contains("f")) {
+        int leftWeight = Integer.parseInt(nowWeight.substring(nowWeight.indexOf("l") + 1, nowWeight.indexOf("f")));
+
+        tvLeftClothWeight.setText(nowWeight.substring(nowWeight.indexOf("l") + 1, nowWeight.indexOf("f")) + "g");
+        if(bandleft.getText().toString().contains("g")) {
+            String left = bandleft.getText().toString();
+        int nowbandleft = Integer.parseInt(left.substring(0, left.indexOf("g")));
+
+        if (leftWeight < nowbandleft - 50) {
+            //  autoSign();
+            tvLeftClothState.setText("已晾干");
+            imgLeftClothState.setImageDrawable(getResources().getDrawable(R.drawable.dry));
+        } else {
+            tvLeftClothState.setText("潮湿");
+            imgLeftClothState.setImageDrawable(getResources().getDrawable(R.drawable.wet));
+        }
+
+
+    }
+}
+
+
+
+                if (nowWeight.contains("r") && nowWeight.contains("i") && nowWeight.contains("l") && nowWeight.contains("f")) {
+
+                    int rightWeight = Integer.parseInt(nowWeight.substring(nowWeight.indexOf("r") + 1, nowWeight.indexOf("i")));
+
+                    tvRightClothWeight.setText(nowWeight.substring(nowWeight.indexOf("r") + 1, nowWeight.indexOf("i")) + "g");
+                    if(bandright.getText().toString().contains("g")) {
+
+                        String right = bandright.getText().toString();
+                    int nowbandright = Integer.parseInt(right.substring(0, right.indexOf("g")));
+
+                    if (rightWeight < nowbandright - 50) {
+                        //  autoSign();
+                        tvRightClothState.setText("已晾干");
+                        imgRightClothState.setImageDrawable(getResources().getDrawable(R.drawable.dry2));
+                    } else {
+                        tvRightClothState.setText("潮湿");
+                        imgRightClothState.setImageDrawable(getResources().getDrawable(R.drawable.wet2));
+                    }
+                }
+            }
+
+
+        }
+    };
+    @Override
+    public void onClick(View view) {
+        //TODO 按钮点击
+        switch (view.getId()) {
+            case R.id.startgetweight:
+                try {
+                    if (bldrytrush) {
+                        send(blue_sp.getBluetoothAd(), Codes.openLundary);
+                        startgetweight.setBackgroundResource(R.drawable.btn_close);
+                        startgetweight.setText("关闭");
+                        bldrytrush = false;
+                    } else {
+                        startgetweight.setText("开启");
+
+                        send(blue_sp.getBluetoothAd(), Codes.closeLundary);
+                        startgetweight.setBackgroundResource(R.drawable.btn_open);
+                        bldrytrush = true;
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.initweightleft:
+                try {
+
+                    send(blue_sp.getBluetoothAd(), Codes.initLeft);
+                    Toast.makeText(this,"已初始化1号位置重量",Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.initweightright:
+                try {
+
+                    send(blue_sp.getBluetoothAd(), Codes.initRight);
+                    Toast.makeText(this,"已初始化2号位置重量",Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.bandleft:
+                if(!tvLeftClothWeight.getText().toString().equals(""))
+                {
+                    if(tvLeftClothWeight.getText().toString().contains("g"))
+                    bandleft.setText(tvLeftClothWeight.getText().toString());
+                    else
+                        Toast.makeText(this,"未获取到1号位置重量",Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+            case R.id.bandright:
+                if(!tvRightClothWeight.getText().toString().equals(""))
+                {
+                    if(tvRightClothWeight.getText().toString().contains("g"))
+                    bandright.setText(tvRightClothWeight.getText().toString());
+                    else
+                        Toast.makeText(this,"未获取到2号位置重量",Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
+    }
 
 
 
@@ -289,82 +408,7 @@ private LongClickButton downLundary,upLaundary;
     }
 
 
-    // 创建handler，因为我们接收是采用线程来接收的，在线程中无法操作UI，所以需要handler
-    @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
 
-            super.handleMessage(msg);
-            Log.e("cc1","收到 "+(String)msg.obj);
-
-//            if (((String)msg.obj).contains("toast"))
-//            {
-//                Log.e("cc","tttttttttttttttt");
-//                Toast.makeText(MainActivity.this, "已为您自动签到", Toast.LENGTH_SHORT).show();
-//            }
-//            else
-//            { tv_recive.setText((String) msg.obj);
-//                if (tv_recive.getText().toString().length()>2)
-//                {
-//                    String nowWeight=tv_recive.getText().toString();
-//                    Log.e("cc",String.valueOf(nowWeight.length()));
-//                    if(nowWeight.length()<8&&nowWeight.length()>3) {
-//                        Log.e("cc",nowWeight.substring(0,nowWeight.indexOf("g")-1));
-//                        if (Integer.parseInt((nowWeight.substring(0,nowWeight.indexOf("g")-1)))> 1000) {
-//                          //  autoSign();
-//                            tvflodstate.setText("已叠被");
-//                            imgflodstate.setImageDrawable(getResources().getDrawable(R.drawable.flod));
-//                        }
-//                        else
-//                        {
-//                            tvflodstate.setText("未叠被");
-//                            imgflodstate.setImageDrawable(getResources().getDrawable(R.drawable.unflod));
-//                        }
-//
-//                    }
-//                }}
-            tv_recive.setText((String) msg.obj);
-
-        }
-    };
-    @Override
-    public void onClick(View view) {
-        //TODO 按钮点击
-        switch (view.getId()) {
-            case R.id.startgetweight:
-                try {
-                    if (bldrytrush) {
-                        send(blue_sp.getBluetoothAd(), Codes.openLundary);
-                        startgetweight.setBackgroundResource(R.drawable.btn_close);
-                        startgetweight.setText("关闭");
-                        bldrytrush = false;
-                    } else {
-                        startgetweight.setText("开启");
-
-                        send(blue_sp.getBluetoothAd(), Codes.closeLundary);
-                        startgetweight.setBackgroundResource(R.drawable.btn_open);
-                        bldrytrush = true;
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.initweight:
-                try {
-
-                        send(blue_sp.getBluetoothAd(), Codes.upLundary);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-
-        }
-
-    }
-    //TODO 按键按下
 
 
 
@@ -399,7 +443,7 @@ private LongClickButton downLundary,upLaundary;
                 return;
             }
             Log.d("aa", "BEGIN mConnectedThread");
-            byte[] buffer = new byte[128];
+            byte[] buffer = new byte[256];
             int bytes;
 
 
