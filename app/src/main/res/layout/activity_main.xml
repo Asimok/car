@@ -153,6 +153,39 @@
 
 
     <LinearLayout
+    android:paddingTop="10dp"
+    android:gravity="center"
+    android:weightSum="4"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <Button
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/bandleft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:background="@drawable/btn_band"
+        android:text="绑定"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="18sp"
+        android:textColor="#ffffff"
+        android:background="@drawable/btn_band"
+        android:layout_width="0dp"
+        android:layout_weight="1.5"
+        android:layout_height="wrap_content"
+        android:text="绑定"
+        android:id="@+id/bandright"
+        />
+</LinearLayout>
+    <LinearLayout
         android:paddingTop="10dp"
         android:gravity="center"
         android:weightSum="4"
@@ -163,12 +196,12 @@
         <Button
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:id="@+id/bandleft"
+            android:id="@+id/startbandleft"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
-            android:background="@drawable/btn_band"
-            android:text="绑定"
+            android:background="@drawable/btn_updown"
+            android:text="开始监测"
             android:textColor="#ffffff"
             android:textSize="18sp" />
 
@@ -177,16 +210,16 @@
             android:layout_marginLeft="20dp"
             android:textSize="18sp"
             android:textColor="#ffffff"
-            android:background="@drawable/btn_band"
+            android:background="@drawable/btn_updown"
             android:layout_width="0dp"
             android:layout_weight="1.5"
             android:layout_height="wrap_content"
-            android:text="绑定"
-            android:id="@+id/bandright"
+            android:text="开始监测"
+            android:id="@+id/startbandright"
             />
     </LinearLayout>
     <RelativeLayout
-android:layout_marginTop="100dp"
+android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

@@ -3,17 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-
+    <item
+        android:id="@+id/menu_2"
+        android:orderInCategory="80"
+        android:title="绑定蓝牙"
+        app:showAsAction="never" />
     <item
         android:id="@+id/menu_1"
         android:orderInCategory="80"
         android:title="断开连接"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/menu_2"
-        android:orderInCategory="80"
-        android:title="绑定蓝牙"
-        app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_3"
+        android:orderInCategory="80"
+        android:title="重新连接"
+        app:showAsAction="never" />
 </menu>

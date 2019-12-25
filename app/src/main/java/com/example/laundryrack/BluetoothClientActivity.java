@@ -54,7 +54,7 @@ public class BluetoothClientActivity extends Activity implements OnItemClickList
     private OutputStream os;
     // 利用线程不断接受客户端信息
     private ConnectedThread thread;
-    boolean commected = true;
+    boolean connected = true;
 
     private Button btnSend = null;
     private TextView sendText;
@@ -162,8 +162,8 @@ public class BluetoothClientActivity extends Activity implements OnItemClickList
                 clientSocket.connect();
                 // 获取到输出流，向外写数据
                 os = clientSocket.getOutputStream();
-                if (commected) {
-                    commected = false;
+                if (connected) {
+                    connected = false;
                     // 实例接收客户端传过来的数据线程
                     thread = new ConnectedThread(clientSocket);
                     // 线程开始

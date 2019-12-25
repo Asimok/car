@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             .fromString("00001101-0000-1000-8000-00805F9B34FB");
     private OutputStream os;
     private ConnectedThread thread;
-    boolean commected = true;
+    boolean connected = true;
     private TextView  tvBandBluetooth;
     private bluetooth_Pref blue_sp;
     // 获取到蓝牙适配器
@@ -57,15 +57,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextToSpeech texttospeech;
     private Button startgetweight;
     private Button initweightleft;
-    private Button bandleft;
-    private Button bandright;
+    private Button bandleft,startbandleft;
+    private Button bandright,startbandright;
 private LongClickButton downLundary,upLaundary;
     BluetoothDevice lvDevice = null;
 
     BluetoothSocket lvSocket = null;
+private boolean isleft=false,isright=false;
 
-
-    private boolean bldrytrush = true;
+    private boolean connectLundary = true,leftspeak=true,rightspeak=true;
 
 
     @SuppressLint("WrongViewCast")
@@ -73,6 +73,7 @@ private LongClickButton downLundary,upLaundary;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("智能晾衣架");
         Button initweightright = findViewById(R.id.initweightright);
         tvRightClothState=findViewById(R.id.rightclothstate);
         tvLeftClothState=findViewById(R.id.leftclothstate);
@@ -88,6 +89,8 @@ private LongClickButton downLundary,upLaundary;
         initweightleft = (Button) findViewById(R.id.initweightleft);
         bandleft = findViewById(R.id.bandleft);
         bandright = findViewById(R.id.bandright);
+        startbandleft = findViewById(R.id.startbandleft);
+        startbandright = findViewById(R.id.startbandright);
           downLundary = (LongClickButton ) findViewById(R.id.downlaundary);
           upLaundary =  (LongClickButton )findViewById(R.id.uplaundary);
 
@@ -140,7 +143,8 @@ private LongClickButton downLundary,upLaundary;
             }
         });
 
-
+        startbandleft.setOnClickListener(this);
+        startbandright.setOnClickListener(this);
         initweightright.setOnClickListener(this);
         startgetweight.setOnClickListener(this);
         initweightleft.setOnClickListener(this);
@@ -181,13 +185,21 @@ String nowWeight=(String) msg.obj;
         int leftWeight = Integer.parseInt(nowWeight.substring(nowWeight.indexOf("l") + 1, nowWeight.indexOf("f")));
 
         tvLeftClothWeight.setText(nowWeight.substring(nowWeight.indexOf("l") + 1, nowWeight.indexOf("f")) + "g");
+
+
         if(bandleft.getText().toString().contains("g")) {
             String left = bandleft.getText().toString();
         int nowbandleft = Integer.parseInt(left.substring(0, left.indexOf("g")));
-
-        if (leftWeight < nowbandleft - 50) {
+            if(isleft)
+        if (leftWeight - 10< nowbandleft && leftWeight+ 10 > nowbandleft ) {
             //  autoSign();
             tvLeftClothState.setText("已晾干");
+            if(leftspeak){
+                texttospeech.speak("1号位置的衣服晾干啦", TextToSpeech.QUEUE_ADD,
+                        null);
+                leftspeak=false;
+            }
+
             imgLeftClothState.setImageDrawable(getResources().getDrawable(R.drawable.dry));
         } else {
             tvLeftClothState.setText("潮湿");
@@ -205,14 +217,22 @@ String nowWeight=(String) msg.obj;
                     int rightWeight = Integer.parseInt(nowWeight.substring(nowWeight.indexOf("r") + 1, nowWeight.indexOf("i")));
 
                     tvRightClothWeight.setText(nowWeight.substring(nowWeight.indexOf("r") + 1, nowWeight.indexOf("i")) + "g");
+
                     if(bandright.getText().toString().contains("g")) {
 
                         String right = bandright.getText().toString();
                     int nowbandright = Integer.parseInt(right.substring(0, right.indexOf("g")));
-
-                    if (rightWeight < nowbandright - 50) {
+                        if(isright)
+                    if (rightWeight - 10< nowbandright && rightWeight+ 10 > nowbandright ) {
                         //  autoSign();
                         tvRightClothState.setText("已晾干");
+
+                        if(rightspeak)
+                        {
+                            texttospeech.speak("2号位置的衣服晾干啦", TextToSpeech.QUEUE_ADD,
+                                    null);
+                            rightspeak=false;
+                        }
                         imgRightClothState.setImageDrawable(getResources().getDrawable(R.drawable.dry2));
                     } else {
                         tvRightClothState.setText("潮湿");
@@ -230,23 +250,63 @@ String nowWeight=(String) msg.obj;
         switch (view.getId()) {
             case R.id.startgetweight:
                 try {
-                    if (bldrytrush) {
-                        send(blue_sp.getBluetoothAd(), Codes.openLundary);
-                        startgetweight.setBackgroundResource(R.drawable.btn_close);
-                        startgetweight.setText("关闭");
-                        bldrytrush = false;
+                    if (connectLundary) {
+                        if(blue_sp.getBluetoothAd().equals("null"))
+                        {
+                            Toast.makeText(MainActivity.this,"请先绑定蓝牙设备",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            send(blue_sp.getBluetoothAd(), Codes.openLundary);
+                            startgetweight.setBackgroundResource(R.drawable.btn_close);
+                            startgetweight.setText("关闭");
+                            connectLundary = false;
+                        }
                     } else {
                         startgetweight.setText("开启");
 
                         send(blue_sp.getBluetoothAd(), Codes.closeLundary);
                         startgetweight.setBackgroundResource(R.drawable.btn_open);
-                        bldrytrush = true;
+                        connectLundary = true;
                     }
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
+            case R.id.startbandleft:
+
+                    if (!isleft) {
+
+                        startbandleft.setBackgroundResource(R.drawable.btn_open);
+                        startbandleft.setText("正在监测");
+                        isleft = true;
+                        leftspeak=true;
+                    } else {
+                        startbandleft.setText("开始监测");
+                        startbandleft.setBackgroundResource(R.drawable.btn_updown);
+                        isleft = false;
+                    }
+
+
+                break;
+            case R.id.startbandright:
+
+                if (!isright) {
+
+                    startbandright.setBackgroundResource(R.drawable.btn_open);
+                    startbandright.setText("正在监测");
+                    isright = true;
+                    rightspeak=true;
+                } else {
+                    startbandright.setText("开始监测");
+                    startbandright.setBackgroundResource(R.drawable.btn_updown);
+                    isright = false;
+                }
+
+
+                break;
+
             case R.id.initweightleft:
                 try {
 
@@ -321,8 +381,8 @@ String nowWeight=(String) msg.obj;
 
                 // 获取到输出流，向外写数据
                 os = lvSocket.getOutputStream();
-                if (commected) {
-                    commected = false;
+                if (connected) {
+                    connected = false;
                     // 实例接收客户端传过来的数据线程
                     thread = new ConnectedThread(lvSocket);
                     // 线程开始
@@ -351,7 +411,30 @@ String nowWeight=(String) msg.obj;
         switch (item.getItemId()) {
             case R.id.menu_1:
                 Toast.makeText(this, "已经断开连接", Toast.LENGTH_SHORT).show();
+                os=null;
+                lvSocket = null;
+                lvDevice=null;
+                connected=true;
                 thread.cancel();
+
+
+                break;
+            case R.id.menu_3:
+                try {
+                    lvDevice=null;
+                    os=null;
+                    lvSocket = null;
+                    connected=true;
+                    thread.cancel();
+
+                    send(blue_sp.getBluetoothAd(), Codes.openLundary);
+
+
+                    Toast.makeText(this, "已重新连接", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
                 break;
             case R.id.menu_2:
@@ -403,7 +486,7 @@ String nowWeight=(String) msg.obj;
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        connected=false;
         thread.cancel();
     }
 
