@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.car.MainActivity"
+    tools:ignore="MissingDefaultResource">
+
+<!--   <LinearLayout-->
+<!--       android:orientation="vertical"-->
+<!--       android:layout_width="match_parent"-->
+<!--       android:layout_height="wrap_content"-->
+<!--       >-->
+<!--    <TextView-->
+<!--        android:layout_gravity="center"-->
+<!--        android:id="@+id/tvBandBluetooth"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="5dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:text="已绑定蓝牙设备："-->
+<!--        android:textSize="18sp" />-->
+<!--</LinearLayout>-->
+    <LinearLayout
+android:gravity="center"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        android:weightSum="6">
+        <Button
+            android:id="@+id/connectCar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_open"
+            android:text="连接小车"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+
+        <Button
+            android:id="@+id/autoDrive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_open"
+            android:text="自动驾驶"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/detectAround"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_open"
+            android:text="探测周边"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+        <Button
+            android:id="@+id/openCarBeep"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="0.7"
+            android:background="@drawable/btn_open"
+            android:text="喇叭"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+        <Button
+            android:id="@+id/openCarLamp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="0.7"
+            android:background="@drawable/btn_open"
+            android:text="车灯"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+        <Button
+            android:id="@+id/openCarLampLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="0.7"
+            android:background="@drawable/btn_open"
+            android:text="左转向"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+        <Button
+            android:id="@+id/openCarLampRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="0.7"
+            android:background="@drawable/btn_open"
+            android:text="右转向"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.example.car.tools.LongClickButton
+            android:id="@+id/btn_back"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/btn_updown"
+            android:padding="10dp"
+            android:text="后退"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.128"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back"
+            app:layout_constraintVertical_bias="0.96"
+            tools:ignore="MissingConstraints,NotSibling" />
+
+        <com.example.car.tools.LongClickButton
+            android:id="@+id/btn_front"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/btn_updown"
+            android:padding="10dp"
+            android:text="前进"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.128"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.025"
+            tools:ignore="MissingConstraints" />
+
+        <com.example.car.tools.LongClickButton
+            android:id="@+id/btn_left"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/btn_updown"
+            android:padding="10dp"
+            android:text="左转"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_right"
+            app:layout_constraintHorizontal_bias="0.936"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.46"
+            tools:ignore="MissingConstraints" />
+
+        <com.example.car.tools.LongClickButton
+            android:id="@+id/btn_right"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/btn_updown"
+            android:padding="10dp"
+            android:text="右转"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.912"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.455"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_band"
+            android:onClick="toFront"
+            android:text="回正"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.751"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.214"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_band"
+            android:onClick="Stop"
+            android:text="手刹"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.055"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.496"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="车辆状态"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.352"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.202"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/havaPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="是否有人:"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.354"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.381"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/frontDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="前方障碍物:"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.364"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.569"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/btn_band"
+            android:text="一档"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.514"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.945"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/btn_band"
+            android:text="二档"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.705"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.945"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/btn_band"
+            android:text="三档"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.945"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

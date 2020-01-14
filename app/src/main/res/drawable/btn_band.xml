@@ -6,7 +6,7 @@
     <solid android:color="#00BCD4" />
     <!-- 设置按钮的四个角为弧形 -->
     <!-- android:radius 弧形的半径 -->
-    <corners android:radius="25dip" />
+    <corners android:radius="100dip" />
 
     <padding android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp" />
 

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">laundryRack</string>
+    <string name="app_name">car</string>
+    <string name="title_activity_test">testActivity</string>
 </resources>

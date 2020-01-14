@@ -1,4 +1,4 @@
-package com.example.laundryrack;
+package com.example.car;
 
 import android.Manifest;
 import android.app.Activity;
@@ -20,7 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.laundryrack.tools.bluetooth_Pref;
+import com.example.car.R;
+import com.example.car.tools.bluetooth_Pref;
 
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -112,7 +113,7 @@ public class Bluetooth_band extends Activity implements OnItemClickListener {
         setContentView(R.layout.layout_buletooth_band);
         blue_sp = bluetooth_Pref.getInstance(this);
 
-        select = (TextView) findViewById(R.id.select);
+        select =   findViewById(R.id.select);
         initBluetooth();
         getPremession();//获取虚拟定位权限
         searchBluetooth();

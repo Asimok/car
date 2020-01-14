@@ -1,4 +1,4 @@
-package com.example.laundryrack.tools;
+package com.example.car.tools;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,4 +1,4 @@
-package com.example.laundryrack;
+package com.example.car;
 
 import org.junit.Test;
 

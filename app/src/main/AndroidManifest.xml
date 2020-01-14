@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.laundryrack">
+    package="com.example.car">
+
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <!-- 6.0以上需要加的额外权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- 6.0以上需要加的额外权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/main"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:icon="@drawable/main" >
+
+        <activity
+
+            android:screenOrientation="landscape"
+            android:name=".MainActivity"
+            android:icon="@drawable/main">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"  />
+                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BluetoothClientActivity"/>
-        <activity android:name=".Bluetooth_band"/>
+        <activity android:name=".Bluetooth_band" />
     </application>
 
 </manifest>
