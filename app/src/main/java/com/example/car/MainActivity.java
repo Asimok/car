@@ -11,20 +11,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.car.R;
-import com.example.car.tools.LongClickButton;
-
 import com.example.car.tools.Codes;
+import com.example.car.tools.LongClickButton;
 import com.example.car.tools.bluetooth_Pref;
 
 import java.io.IOException;
@@ -32,7 +28,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 获取到蓝牙适配器
     public BluetoothAdapter mBluetoothAdapter;
     private Button openCarLamp, openCarBeep, connectCar, openCarLampLeft, openCarLampRight;
-    private Button autoDrive, detectAround,one,two,three;
+    private Button autoDrive, detectAround, one, two, three, zero;
     private LongClickButton btn_back, btn_front, btn_Left, btn_Right;
     BluetoothDevice lvDevice = null;
     private boolean connectedCar = false;
@@ -81,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         one = findViewById(R.id.one);
         two = findViewById(R.id.two);
         three = findViewById(R.id.three);
+        zero = findViewById(R.id.zero);
 
         btn_back = (LongClickButton) findViewById(R.id.btn_back);
         btn_front = (LongClickButton) findViewById(R.id.btn_front);
@@ -185,8 +181,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         autoDrive.setOnClickListener(this);
         detectAround.setOnClickListener(this);
         one.setOnClickListener(this);
-        two .setOnClickListener(this);
+        two.setOnClickListener(this);
         three.setOnClickListener(this);
+        zero.setOnClickListener(this);
     }
 
 
@@ -274,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             openCarLampRight.setBackgroundResource(R.drawable.btn_close);
                             openCarLampRight.setText("右转向");
                             boolopenCarLampRight = !boolopenCarLampRight;
+
                         }
                     } else {
                         openCarLampRight.setText("右转向");
@@ -377,18 +375,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.one:
 
-                        if (blue_sp.getBluetoothAd().equals("null")) {
-                            Toast.makeText(MainActivity.this, "请先连接蓝牙", Toast.LENGTH_SHORT).show();
-                        } else {
-                            try {
-                                send(blue_sp.getBluetoothAd(), Codes.one);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            one.setBackgroundResource(R.drawable.btn_close);
-                           two.setBackgroundResource(R.drawable.btn_band);
-                            three.setBackgroundResource(R.drawable.btn_band);
-                        }
+                if (blue_sp.getBluetoothAd().equals("null")) {
+                    Toast.makeText(MainActivity.this, "请先连接蓝牙", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        send(blue_sp.getBluetoothAd(), Codes.one);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    zero.setBackgroundResource(R.drawable.btn_band);
+                    one.setBackgroundResource(R.drawable.btn_close);
+                    two.setBackgroundResource(R.drawable.btn_band);
+                    three.setBackgroundResource(R.drawable.btn_band);
+                }
                 break;
             case R.id.two:
 
@@ -400,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    zero.setBackgroundResource(R.drawable.btn_band);
                     two.setBackgroundResource(R.drawable.btn_close);
                     one.setBackgroundResource(R.drawable.btn_band);
                     three.setBackgroundResource(R.drawable.btn_band);
@@ -415,7 +415,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    zero.setBackgroundResource(R.drawable.btn_band);
                     three.setBackgroundResource(R.drawable.btn_close);
+                    one.setBackgroundResource(R.drawable.btn_band);
+                    two.setBackgroundResource(R.drawable.btn_band);
+                }
+                break;
+            case R.id.zero:
+
+                if (blue_sp.getBluetoothAd().equals("null")) {
+                    Toast.makeText(MainActivity.this, "请先连接蓝牙", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        send(blue_sp.getBluetoothAd(), Codes.zero);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    zero.setBackgroundResource(R.drawable.btn_close);
+                    three.setBackgroundResource(R.drawable.btn_band);
                     one.setBackgroundResource(R.drawable.btn_band);
                     two.setBackgroundResource(R.drawable.btn_band);
                 }

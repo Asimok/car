@@ -25,4 +25,5 @@ public class Codes {
     public static byte[] one = {(byte) '1'};
     public static byte[] two = {(byte) '2'};
     public static byte[] three = {(byte) '3'};
+    public static byte[] zero = {(byte) '0'};
 }
